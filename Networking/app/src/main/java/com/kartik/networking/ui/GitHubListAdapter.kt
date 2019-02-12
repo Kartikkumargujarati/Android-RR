@@ -12,11 +12,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.kartik.networking.R
-import com.kartik.networking.model.Repository
+import com.kartik.networking.model.GitHubRepository
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.list_item.view.*
 
-class CustomListAdapter(private var repositories: ArrayList<Repository>) : RecyclerView.Adapter<CustomListAdapter.ViewHolder>() {
+class GitHubListAdapter(private var gitHubRepositories: ArrayList<GitHubRepository>) : RecyclerView.Adapter<GitHubListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
@@ -24,23 +24,22 @@ class CustomListAdapter(private var repositories: ArrayList<Repository>) : Recyc
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindRepo(repositories[position])
+        holder.bindRepo(gitHubRepositories[position])
     }
 
-    override fun getItemCount(): Int = repositories.size
+    override fun getItemCount(): Int = gitHubRepositories.size
 
     override fun getItemId(position: Int): Long = position.toLong()
 
     override fun getItemViewType(position: Int): Int =  position
 
-
-    fun updateData(data: ArrayList<Repository>) {
-        repositories = data
+    fun updateData(data: ArrayList<GitHubRepository>) {
+        gitHubRepositories = data
         notifyDataSetChanged()
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bindRepo(repo: Repository?) {
+        fun bindRepo(repo: GitHubRepository?) {
 
             with(repo) {
                 itemView.repo_name.text = repo?.name
