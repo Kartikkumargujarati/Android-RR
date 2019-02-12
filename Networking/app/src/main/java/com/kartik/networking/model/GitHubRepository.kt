@@ -7,9 +7,9 @@
 
 package com.kartik.networking.model
 
-data class Repositories(val items: List<Repository>)
+data class GitHubRepositories(val items: List<GitHubRepository>)
 
-data class Repository(
+data class GitHubRepository(
         val name: String?,
         val owner: Owner,
         val stargazers_count: String?,
