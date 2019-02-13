@@ -1,0 +1,15 @@
+<!--
+  ~ Created by Kartik Kumar Gujarati on 2/12/19 10:21 PM
+  ~ Copyright (c) 2019 . All rights reserved.
+  ~
+  ~ Last modified 2/12/19 10:21 PM
+  -->
+
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+</resources>
