@@ -16,4 +16,8 @@
     tools:context=".ui.DrawerActivity"
     tools:showIn="@layout/app_bar_drawer">
 
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </android.support.constraint.ConstraintLayout>
