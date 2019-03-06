@@ -8,11 +8,16 @@
 package com.kartik.networking.data
 
 import com.kartik.networking.model.GitHubRepositories
+import com.kartik.networking.model.MockData
 import retrofit2.Call
 import retrofit2.http.GET
 
-interface GitHubServiceRepository {
+interface RemoteServiceRepository {
 
-    @GET("/search/repositories?q=language:kotlin&sort=stars&order=desc") //sample search
+    @GET("/search/repositories?q=language:kotlin&sort=stars&order=desc")
     fun getKotlinRepositories(): Call<GitHubRepositories>
+
+    @GET("/api/users")
+    fun getMockData(): Call<MockData>
+
 }

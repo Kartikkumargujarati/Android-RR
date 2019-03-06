@@ -7,28 +7,44 @@
 
 package com.kartik.networking.ui
 
-import com.kartik.networking.data.GitHubServiceRepositoryImpl
+import com.kartik.networking.data.RemoteServiceRepositoryImpl
 import com.kartik.networking.model.GitHubRepositories
+import com.kartik.networking.model.MockData
+import com.kartik.networking.ui.base.BaseView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ListPresenterImpl(private var mListView: ListView?, private val mGitHubServiceRepository: GitHubServiceRepositoryImpl) : ListPresenter {
+class ListPresenterImpl(private var mView: BaseView?, private val mRemoteServiceRepository: RemoteServiceRepositoryImpl) : ListPresenter {
 
     override fun detach() {
-        mListView = null
+        mView = null
     }
 
     override fun getKotlinRepositories() {
-        mGitHubServiceRepository.getKotlinRepositories(object : Callback<GitHubRepositories> {
+        mRemoteServiceRepository.getKotlinRepositories(object : Callback<GitHubRepositories> {
             override fun onResponse(call: Call<GitHubRepositories>?, response: Response<GitHubRepositories>?) {
                 response?.isSuccessful.let {
-                    mListView?.showList(response?.body())
+                    (mView as GitHubRepoListView?)?.showGitHubRepoList(response?.body())
                 }
             }
 
             override fun onFailure(call: Call<GitHubRepositories>?, t: Throwable?) {
-                mListView?.showErrorToast()
+                mView?.showErrorToast()
+            }
+        })
+    }
+
+    override fun getMockData() {
+        mRemoteServiceRepository.getMockData(object : Callback<MockData> {
+            override fun onResponse(call: Call<MockData>?, response: Response<MockData>?) {
+                response?.isSuccessful.let {
+                    (mView as MockDataListView?)?.showMockDataList(response?.body())
+                }
+            }
+
+            override fun onFailure(call: Call<MockData>?, t: Throwable?) {
+                mView?.showErrorToast()
             }
         })
     }

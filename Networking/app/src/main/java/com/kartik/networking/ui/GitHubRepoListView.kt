@@ -8,8 +8,8 @@
 package com.kartik.networking.ui
 
 import com.kartik.networking.model.GitHubRepositories
+import com.kartik.networking.ui.base.BaseView
 
-interface ListView {
-    fun showList(repositoryList: GitHubRepositories?)
-    fun showErrorToast()
+interface GitHubRepoListView : BaseView {
+    fun showGitHubRepoList(repositoryList: GitHubRepositories?)
 }

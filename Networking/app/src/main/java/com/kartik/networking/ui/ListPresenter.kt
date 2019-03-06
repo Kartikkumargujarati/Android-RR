@@ -12,4 +12,6 @@ interface ListPresenter {
     fun detach()
 
     fun getKotlinRepositories()
+
+    fun getMockData()
 }
