@@ -14,3 +14,13 @@ data class User(
         val first_name: String,
         val last_name: String?,
         val avatar: String?)
+
+data class NewUserRequest(
+        val name: String?,
+        val job: String?)
+
+data class NewUserResponse(
+        val id: String?,
+        val name: String?,
+        val job: String?,
+        val createdAt: String?)
