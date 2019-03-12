@@ -7,10 +7,11 @@
 
 package com.kartik.networking.data
 
-import com.kartik.networking.model.GitHubRepositories
-import com.kartik.networking.model.MockData
+import com.kartik.networking.model.*
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 
 interface RemoteServiceRepository {
 
@@ -20,4 +21,6 @@ interface RemoteServiceRepository {
     @GET("/api/users")
     fun getMockData(): Call<MockData>
 
+    @POST("/api/users")
+    fun addMockUser(@Body user: NewUserRequest): Call<NewUserResponse>
 }

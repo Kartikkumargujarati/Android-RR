@@ -10,6 +10,8 @@ package com.kartik.networking.ui
 import com.kartik.networking.data.RemoteServiceRepositoryImpl
 import com.kartik.networking.model.GitHubRepositories
 import com.kartik.networking.model.MockData
+import com.kartik.networking.model.NewUserRequest
+import com.kartik.networking.model.NewUserResponse
 import com.kartik.networking.ui.base.BaseView
 import retrofit2.Call
 import retrofit2.Callback
@@ -48,4 +50,20 @@ class ListPresenterImpl(private var mView: BaseView?, private val mRemoteService
             }
         })
     }
+
+    override fun addMockUser(user: NewUserRequest) {
+        mRemoteServiceRepository.addMockUser(user, object : Callback<NewUserResponse> {
+            override fun onResponse(call: Call<NewUserResponse>?, response: Response<NewUserResponse>?) {
+                response?.isSuccessful.let {
+                    (mView as AddUserView?)?.showSuccessToast(response?.body())
+                }
+            }
+
+            override fun onFailure(call: Call<NewUserResponse>?, t: Throwable?) {
+                mView?.showErrorToast()
+            }
+        })
+    }
+
+
 }

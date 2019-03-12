@@ -7,6 +7,8 @@
 
 package com.kartik.networking.ui
 
+import com.kartik.networking.model.NewUserRequest
+
 interface ListPresenter {
 
     fun detach()
@@ -14,4 +16,6 @@ interface ListPresenter {
     fun getKotlinRepositories()
 
     fun getMockData()
+
+    fun addMockUser(user: NewUserRequest)
 }

@@ -7,8 +7,7 @@
 
 package com.kartik.networking.data
 
-import com.kartik.networking.model.GitHubRepositories
-import com.kartik.networking.model.MockData
+import com.kartik.networking.model.*
 import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -32,6 +31,16 @@ class RemoteServiceRepositoryImpl {
                 .build()
         val mRemoteServiceRepository = retrofit.create(RemoteServiceRepository::class.java)
         val call = mRemoteServiceRepository.getMockData()
+        call.enqueue(callback)
+    }
+
+    fun addMockUser(user: NewUserRequest, callback: Callback<NewUserResponse>) {
+        val retrofit = Retrofit.Builder()
+                .baseUrl(MOCK_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        val mRemoteServiceRepository = retrofit.create(RemoteServiceRepository::class.java)
+        val call = mRemoteServiceRepository.addMockUser(user)
         call.enqueue(callback)
     }
 
