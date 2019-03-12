@@ -7,6 +7,7 @@
 
 package com.kartik.networking.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
@@ -35,6 +36,7 @@ class MockDataListFragment : Fragment(), MockDataListView {
         val rootView = inflater.inflate(R.layout.fragment_repo_list, container, false)
         mFab = activity?.findViewById(R.id.fab)
         mFab?.show()
+        mFab?.setOnClickListener { navigateToAddUserScreen() }
         val itemDecor = DividerItemDecoration(activity, DividerItemDecoration.VERTICAL)
         rootView.repo_rl.addItemDecoration(itemDecor)
         //repo_rl.setHasFixedSize(true)
@@ -48,6 +50,11 @@ class MockDataListFragment : Fragment(), MockDataListView {
         doLoadData()
 
         return rootView
+    }
+
+    private fun navigateToAddUserScreen() {
+        Toast.makeText(activity, "Add User", Toast.LENGTH_LONG).show()
+        startActivity(Intent(activity, AddUserActivity::class.java))
     }
 
     override fun onDetach() {
