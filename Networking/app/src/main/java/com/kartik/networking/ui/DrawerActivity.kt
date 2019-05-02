@@ -9,6 +9,7 @@ package com.kartik.networking.ui
 
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -19,30 +20,24 @@ import kotlinx.android.synthetic.main.app_bar_drawer.*
 
 class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    private val ghFragment = GitHubRepoListFragment.newInstance()
+    private val mockListFragment = MockDataListFragment.newInstance()
+    private var currentFragment: Fragment? = null
+    private val fm = supportFragmentManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_drawer)
         setSupportActionBar(toolbar)
-        fab.hide()
+
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
-        startFragment(GitHubRepoListFragment.TAG)
-    }
-
-    private fun startFragment(tag: String) {
-        var baseFragment = supportFragmentManager.findFragmentByTag(tag)
-        if (baseFragment == null) {
-            when (tag) {
-                GitHubRepoListFragment.TAG -> baseFragment = GitHubRepoListFragment.newInstance()
-                MockDataListFragment.TAG -> baseFragment = MockDataListFragment.newInstance()
-            }
-            baseFragment?.let { supportFragmentManager.beginTransaction().replace(R.id.content_frame, it, tag).commit() }
-        } else {
-            supportFragmentManager.beginTransaction().show(baseFragment).commit()
-        }
+        currentFragment = ghFragment
+        fm.beginTransaction().add(R.id.content_frame, mockListFragment, MockDataListFragment.TAG).hide(mockListFragment).commit()
+        fm.beginTransaction().add(R.id.content_frame, ghFragment, GitHubRepoListFragment.TAG).commit()
     }
 
     override fun onBackPressed() {
@@ -57,10 +52,12 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_ghList -> {
-                startFragment(GitHubRepoListFragment.TAG)
+                currentFragment?.let { fm.beginTransaction().hide(it).show(ghFragment).commit() }
+                currentFragment = ghFragment
             }
             R.id.nav_mockList -> {
-                startFragment(MockDataListFragment.TAG)
+                currentFragment?.let { fm.beginTransaction().hide(it).show(mockListFragment).commit() }
+                currentFragment = mockListFragment
             }
         }
 
