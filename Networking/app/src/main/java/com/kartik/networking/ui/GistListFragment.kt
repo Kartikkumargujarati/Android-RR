@@ -7,6 +7,7 @@
 
 package com.kartik.networking.ui
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
@@ -34,7 +35,6 @@ class GistListFragment : Fragment(), GistListView {
         val rootView = inflater.inflate(R.layout.fragment_repo_list, container, false)
         retainInstance = true
         mFab = activity?.findViewById(R.id.fab)
-        mFab?.show()
         mFab?.setOnClickListener { navigateToAddUserScreen() }
         val itemDecor = DividerItemDecoration(activity, DividerItemDecoration.VERTICAL)
         rootView.repo_rl.addItemDecoration(itemDecor)
@@ -52,14 +52,22 @@ class GistListFragment : Fragment(), GistListView {
     }
 
     private fun navigateToAddUserScreen() {
-        Toast.makeText(activity, "Add new Gist", Toast.LENGTH_LONG).show()
-        //startActivity(Intent(activity, AddUserActivity::class.java))
+        startActivityForResult(Intent(activity, AddGistActivity::class.java), 101)
     }
 
     override fun onDetach() {
         super.onDetach()
         mFab?.hide()
         mListPresenterImpl.detach()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (resultCode) {
+            Activity.RESULT_OK -> {
+                doLoadData()
+            }
+        }
     }
 
     override fun showGistList(gistList: List<Gist>) {
