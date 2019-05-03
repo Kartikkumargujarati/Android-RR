@@ -10,6 +10,6 @@ package com.kartik.networking.ui
 import com.kartik.networking.model.GitHubRepositories
 import com.kartik.networking.ui.base.BaseView
 
-interface GitHubRepoListView : BaseView {
+interface RepositoryListView : BaseView {
     fun showGitHubRepoList(repositoryList: GitHubRepositories?)
 }

@@ -23,8 +23,8 @@ import kotlinx.android.synthetic.main.app_bar_drawer.*
 
 class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private val ghFragment = GitHubRepoListFragment.newInstance()
-    private val mockListFragment = MockDataListFragment.newInstance()
+    private val repositoryListFragment = RepositoryListFragment.newInstance()
+    private val gistListFragment = GistListFragment.newInstance()
     private var currentFragment: Fragment? = null
     private val fm = supportFragmentManager
 
@@ -40,9 +40,9 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         if (!isConnectedToInternet()) {
             Toast.makeText(this, "No network connection", Toast.LENGTH_LONG).show()
         } else {
-            currentFragment = ghFragment
-            fm.beginTransaction().add(R.id.content_frame, mockListFragment, MockDataListFragment.TAG).hide(mockListFragment).commit()
-            fm.beginTransaction().add(R.id.content_frame, ghFragment, GitHubRepoListFragment.TAG).commit()
+            currentFragment = repositoryListFragment
+            fm.beginTransaction().add(R.id.content_frame, gistListFragment, GistListFragment.TAG).hide(gistListFragment).commit()
+            fm.beginTransaction().add(R.id.content_frame, repositoryListFragment, RepositoryListFragment.TAG).commit()
         }
     }
 
@@ -57,13 +57,13 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_ghList -> {
-                currentFragment?.let { fm.beginTransaction().hide(it).show(ghFragment).commit() }
-                currentFragment = ghFragment
+            R.id.nav_repositoryList -> {
+                currentFragment?.let { fm.beginTransaction().hide(it).show(repositoryListFragment).commit() }
+                currentFragment = repositoryListFragment
             }
-            R.id.nav_mockList -> {
-                currentFragment?.let { fm.beginTransaction().hide(it).show(mockListFragment).commit() }
-                currentFragment = mockListFragment
+            R.id.nav_gistList -> {
+                currentFragment?.let { fm.beginTransaction().hide(it).show(gistListFragment).commit() }
+                currentFragment = gistListFragment
             }
         }
 

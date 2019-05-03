@@ -8,6 +8,7 @@
 package com.kartik.networking.ui
 
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -19,19 +20,22 @@ import android.widget.Toast
 import com.kartik.networking.R
 import com.kartik.networking.data.RemoteServiceRepositoryImpl
 import com.kartik.networking.model.GitHubRepositories
-import com.kartik.networking.model.GitHubRepository
+import com.kartik.networking.model.Repository
 import kotlinx.android.synthetic.main.fragment_repo_list.view.*
 
-class GitHubRepoListFragment : Fragment(), GitHubRepoListView {
+class RepositoryListFragment : Fragment(), RepositoryListView {
 
-    private lateinit var mRepoAdapter: GitHubListAdapter
+    private lateinit var mRepoAdapter: RepositoryListAdapter
     private lateinit var mListPresenterImpl: ListPresenterImpl
+    private var mFab: FloatingActionButton? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_repo_list, container, false)
-
+        retainInstance = true
+        mFab = activity?.findViewById(R.id.fab)
+        mFab?.hide()
         val itemDecor = DividerItemDecoration(activity, DividerItemDecoration.VERTICAL)
         rootView.repo_rl.addItemDecoration(itemDecor)
         //repo_rl.setHasFixedSize(true)
@@ -40,7 +44,7 @@ class GitHubRepoListFragment : Fragment(), GitHubRepoListView {
 
         mListPresenterImpl = ListPresenterImpl(this, RemoteServiceRepositoryImpl())
 
-        mRepoAdapter = GitHubListAdapter(ArrayList())
+        mRepoAdapter = RepositoryListAdapter(ArrayList())
         rootView.repo_rl.adapter = mRepoAdapter
         doLoadData()
 
@@ -53,7 +57,7 @@ class GitHubRepoListFragment : Fragment(), GitHubRepoListView {
     }
 
     override fun showGitHubRepoList(repositoryList: GitHubRepositories?) {
-        mRepoAdapter.updateData(repositoryList?.items as ArrayList<GitHubRepository>)
+        mRepoAdapter.updateData(repositoryList?.items as ArrayList<Repository>)
     }
 
     override fun showErrorToast() {
@@ -65,8 +69,8 @@ class GitHubRepoListFragment : Fragment(), GitHubRepoListView {
     }
 
     companion object {
-        val TAG = GitHubRepoListFragment::class.java.canonicalName
+        val TAG = RepositoryListFragment::class.java.canonicalName
         @JvmStatic
-        fun newInstance() = GitHubRepoListFragment()
+        fun newInstance() = RepositoryListFragment()
     }
 }
