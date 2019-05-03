@@ -7,6 +7,8 @@
 
 package com.kartik.networking.ui
 
+import com.kartik.networking.model.GistReq
+
 interface ListPresenter {
 
     fun detach()
@@ -14,4 +16,6 @@ interface ListPresenter {
     fun getKotlinRepositories()
 
     fun getPublicGists()
+
+    fun addPublicGist(req: GistReq)
 }

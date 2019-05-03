@@ -7,10 +7,10 @@
 
 package com.kartik.networking.ui
 
-import com.kartik.networking.model.NewUserResponse
+import com.kartik.networking.model.Gist
 import com.kartik.networking.ui.base.BaseView
 
-interface AddUserView : BaseView {
+interface AddGistView : BaseView {
 
-    fun showSuccessToast(user: NewUserResponse?)
+    fun showSuccessToast(gist: Gist)
 }
