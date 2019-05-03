@@ -13,13 +13,6 @@
     android:layout_height="wrap_content"
     android:padding="16dp">
 
-    <ImageView
-        android:id="@+id/avatar_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:padding="5dp"
-        android:contentDescription="@string/repository_avatar_txt"/>
-
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -28,19 +21,13 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/user_id"
+            android:id="@+id/gist_desc_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"/>
 
         <TextView
-            android:id="@+id/user_fName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5dp"/>
-
-        <TextView
-            android:id="@+id/user_lName"
+            android:id="@+id/gist_created_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"/>

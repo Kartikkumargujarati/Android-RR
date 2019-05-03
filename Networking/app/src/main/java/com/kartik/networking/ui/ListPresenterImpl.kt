@@ -8,10 +8,7 @@
 package com.kartik.networking.ui
 
 import com.kartik.networking.data.RemoteServiceRepositoryImpl
-import com.kartik.networking.model.GitHubRepositories
-import com.kartik.networking.model.MockData
-import com.kartik.networking.model.NewUserRequest
-import com.kartik.networking.model.NewUserResponse
+import com.kartik.networking.model.*
 import com.kartik.networking.ui.base.BaseView
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,7 +24,7 @@ class ListPresenterImpl(private var mView: BaseView?, private val mRemoteService
         mRemoteServiceRepository.getKotlinRepositories(object : Callback<GitHubRepositories> {
             override fun onResponse(call: Call<GitHubRepositories>?, response: Response<GitHubRepositories>?) {
                 response?.isSuccessful.let {
-                    (mView as GitHubRepoListView?)?.showGitHubRepoList(response?.body())
+                    (mView as RepositoryListView?)?.showGitHubRepoList(response?.body())
                 }
             }
 
@@ -37,33 +34,17 @@ class ListPresenterImpl(private var mView: BaseView?, private val mRemoteService
         })
     }
 
-    override fun getMockData() {
-        mRemoteServiceRepository.getMockData(object : Callback<MockData> {
-            override fun onResponse(call: Call<MockData>?, response: Response<MockData>?) {
+    override fun getPublicGists() {
+        mRemoteServiceRepository.getPublicGists(object : Callback<List<Gist>> {
+            override fun onResponse(call: Call<List<Gist>>?, response: Response<List<Gist>>?) {
                 response?.isSuccessful.let {
-                    (mView as MockDataListView?)?.showMockDataList(response?.body())
+                    (mView as GistListView?)?.showGistList(response?.body()!!)
                 }
             }
 
-            override fun onFailure(call: Call<MockData>?, t: Throwable?) {
+            override fun onFailure(call: Call<List<Gist>>?, t: Throwable?) {
                 mView?.showErrorToast()
             }
         })
     }
-
-    override fun addMockUser(user: NewUserRequest) {
-        mRemoteServiceRepository.addMockUser(user, object : Callback<NewUserResponse> {
-            override fun onResponse(call: Call<NewUserResponse>?, response: Response<NewUserResponse>?) {
-                response?.isSuccessful.let {
-                    (mView as AddUserView?)?.showSuccessToast(response?.body())
-                }
-            }
-
-            override fun onFailure(call: Call<NewUserResponse>?, t: Throwable?) {
-                mView?.showErrorToast()
-            }
-        })
-    }
-
-
 }

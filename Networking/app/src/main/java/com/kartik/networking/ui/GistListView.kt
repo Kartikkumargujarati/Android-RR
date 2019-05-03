@@ -7,9 +7,9 @@
 
 package com.kartik.networking.ui
 
-import com.kartik.networking.model.MockData
+import com.kartik.networking.model.Gist
 import com.kartik.networking.ui.base.BaseView
 
-interface MockDataListView : BaseView {
-    fun showMockDataList(mockList: MockData?)
+interface GistListView : BaseView {
+    fun showGistList(gistList: List<Gist>)
 }

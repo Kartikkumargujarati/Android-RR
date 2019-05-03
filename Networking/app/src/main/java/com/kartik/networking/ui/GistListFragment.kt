@@ -19,14 +19,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.kartik.networking.R
 import com.kartik.networking.data.RemoteServiceRepositoryImpl
-import com.kartik.networking.model.MockData
-import com.kartik.networking.model.User
-import kotlinx.android.synthetic.main.app_bar_drawer.*
+import com.kartik.networking.model.Gist
 import kotlinx.android.synthetic.main.fragment_repo_list.view.*
 
-class MockDataListFragment : Fragment(), MockDataListView {
+class GistListFragment : Fragment(), GistListView {
 
-    private lateinit var mRepoAdapter: MockDataListAdapter
+    private lateinit var mGistListAdapter: GistListAdapter
     private lateinit var mListPresenterImpl: ListPresenterImpl
     private var mFab: FloatingActionButton? = null
 
@@ -34,6 +32,7 @@ class MockDataListFragment : Fragment(), MockDataListView {
             savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_repo_list, container, false)
+        retainInstance = true
         mFab = activity?.findViewById(R.id.fab)
         mFab?.show()
         mFab?.setOnClickListener { navigateToAddUserScreen() }
@@ -45,16 +44,16 @@ class MockDataListFragment : Fragment(), MockDataListView {
 
         mListPresenterImpl = ListPresenterImpl(this, RemoteServiceRepositoryImpl())
 
-        mRepoAdapter = MockDataListAdapter(ArrayList())
-        rootView.repo_rl.adapter = mRepoAdapter
+        mGistListAdapter = GistListAdapter(ArrayList())
+        rootView.repo_rl.adapter = mGistListAdapter
         doLoadData()
 
         return rootView
     }
 
     private fun navigateToAddUserScreen() {
-        Toast.makeText(activity, "Add User", Toast.LENGTH_LONG).show()
-        startActivity(Intent(activity, AddUserActivity::class.java))
+        Toast.makeText(activity, "Add new Gist", Toast.LENGTH_LONG).show()
+        //startActivity(Intent(activity, AddUserActivity::class.java))
     }
 
     override fun onDetach() {
@@ -63,8 +62,8 @@ class MockDataListFragment : Fragment(), MockDataListView {
         mListPresenterImpl.detach()
     }
 
-    override fun showMockDataList(mockList: MockData?) {
-        mRepoAdapter.updateData(mockList?.data as ArrayList<User>)
+    override fun showGistList(gistList: List<Gist>) {
+        mGistListAdapter.updateData(gistList as ArrayList<Gist>)
     }
 
     override fun showErrorToast() {
@@ -72,12 +71,12 @@ class MockDataListFragment : Fragment(), MockDataListView {
     }
 
     private fun doLoadData() {
-        mListPresenterImpl.getMockData()
+        mListPresenterImpl.getPublicGists()
     }
 
     companion object {
-        val TAG = MockDataListFragment::class.java.canonicalName
+        val TAG = GistListFragment::class.java.canonicalName
         @JvmStatic
-        fun newInstance() = MockDataListFragment()
+        fun newInstance() = GistListFragment()
     }
 }
