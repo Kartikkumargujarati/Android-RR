@@ -14,38 +14,23 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RemoteServiceRepositoryImpl {
 
+    private val retrofit = Retrofit.Builder()
+            .baseUrl(GITHUB_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    private val mRemoteServiceRepository = retrofit.create(RemoteServiceRepository::class.java)
+
     fun getKotlinRepositories(callback: Callback<GitHubRepositories>) {
-        val retrofit = Retrofit.Builder()
-                .baseUrl(GITHUB_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        val mRemoteServiceRepository = retrofit.create(RemoteServiceRepository::class.java)
         val call = mRemoteServiceRepository.getKotlinRepositories()
         call.enqueue(callback)
     }
 
-    fun getMockData(callback: Callback<MockData>) {
-        val retrofit = Retrofit.Builder()
-                .baseUrl(MOCK_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        val mRemoteServiceRepository = retrofit.create(RemoteServiceRepository::class.java)
-        val call = mRemoteServiceRepository.getMockData()
-        call.enqueue(callback)
-    }
-
-    fun addMockUser(user: NewUserRequest, callback: Callback<NewUserResponse>) {
-        val retrofit = Retrofit.Builder()
-                .baseUrl(MOCK_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        val mRemoteServiceRepository = retrofit.create(RemoteServiceRepository::class.java)
-        val call = mRemoteServiceRepository.addMockUser(user)
+    fun getPublicGists(callback: Callback<List<Gist>>) {
+        val call = mRemoteServiceRepository.getPublicGists()
         call.enqueue(callback)
     }
 
     companion object {
         const val GITHUB_URL = "https://api.github.com/"
-        const val MOCK_URL = "https://reqres.in/"
     }
 }

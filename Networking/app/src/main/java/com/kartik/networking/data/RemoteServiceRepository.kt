@@ -9,18 +9,13 @@ package com.kartik.networking.data
 
 import com.kartik.networking.model.*
 import retrofit2.Call
-import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.POST
 
 interface RemoteServiceRepository {
 
     @GET("/search/repositories?q=language:kotlin&sort=stars&order=desc")
     fun getKotlinRepositories(): Call<GitHubRepositories>
 
-    @GET("/api/users")
-    fun getMockData(): Call<MockData>
-
-    @POST("/api/users")
-    fun addMockUser(@Body user: NewUserRequest): Call<NewUserResponse>
+    @GET("/gists/public")
+    fun getPublicGists(): Call<List<Gist>>
 }
