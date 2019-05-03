@@ -47,4 +47,18 @@ class ListPresenterImpl(private var mView: BaseView?, private val mRemoteService
             }
         })
     }
+
+    override fun addPublicGist(req: GistReq) {
+        mRemoteServiceRepository.postPublicGist(req, object : Callback<Gist> {
+            override fun onResponse(call: Call<Gist>, response: Response<Gist>?) {
+                response?.isSuccessful.let {
+                    (mView as AddGistView?)?.showSuccessToast(response?.body()!!)
+                }
+            }
+
+            override fun onFailure(call: Call<Gist>, t: Throwable) {
+                (mView as AddGistView?)?.showErrorToast()
+            }
+        })
+    }
 }
