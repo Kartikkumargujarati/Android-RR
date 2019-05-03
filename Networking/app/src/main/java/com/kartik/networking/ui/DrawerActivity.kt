@@ -32,6 +32,7 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_drawer)
         setSupportActionBar(toolbar)
+        fab.hide()
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
@@ -58,10 +59,12 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_repositoryList -> {
+                fab.hide()
                 currentFragment?.let { fm.beginTransaction().hide(it).show(repositoryListFragment).commit() }
                 currentFragment = repositoryListFragment
             }
             R.id.nav_gistList -> {
+                fab.show()
                 currentFragment?.let { fm.beginTransaction().hide(it).show(gistListFragment).commit() }
                 currentFragment = gistListFragment
             }

@@ -27,15 +27,12 @@ class RepositoryListFragment : Fragment(), RepositoryListView {
 
     private lateinit var mRepoAdapter: RepositoryListAdapter
     private lateinit var mListPresenterImpl: ListPresenterImpl
-    private var mFab: FloatingActionButton? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_repo_list, container, false)
         retainInstance = true
-        mFab = activity?.findViewById(R.id.fab)
-        mFab?.hide()
         val itemDecor = DividerItemDecoration(activity, DividerItemDecoration.VERTICAL)
         rootView.repo_rl.addItemDecoration(itemDecor)
         //repo_rl.setHasFixedSize(true)
