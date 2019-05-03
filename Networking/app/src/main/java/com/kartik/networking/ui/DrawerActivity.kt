@@ -7,6 +7,8 @@
 
 package com.kartik.networking.ui
 
+import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
@@ -14,6 +16,7 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import android.widget.Toast
 import com.kartik.networking.R
 import kotlinx.android.synthetic.main.activity_drawer.*
 import kotlinx.android.synthetic.main.app_bar_drawer.*
@@ -29,15 +32,18 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_drawer)
         setSupportActionBar(toolbar)
-
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
-        currentFragment = ghFragment
-        fm.beginTransaction().add(R.id.content_frame, mockListFragment, MockDataListFragment.TAG).hide(mockListFragment).commit()
-        fm.beginTransaction().add(R.id.content_frame, ghFragment, GitHubRepoListFragment.TAG).commit()
+        if (!isConnectedToInternet()) {
+            Toast.makeText(this, "No network connection", Toast.LENGTH_LONG).show()
+        } else {
+            currentFragment = ghFragment
+            fm.beginTransaction().add(R.id.content_frame, mockListFragment, MockDataListFragment.TAG).hide(mockListFragment).commit()
+            fm.beginTransaction().add(R.id.content_frame, ghFragment, GitHubRepoListFragment.TAG).commit()
+        }
     }
 
     override fun onBackPressed() {
@@ -63,5 +69,11 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun isConnectedToInternet(): Boolean {
+        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = cm.activeNetworkInfo
+        return activeNetwork != null && activeNetwork.isConnected
     }
 }
