@@ -1,21 +1,23 @@
-package com.kartik.todomvvm
+/*
+ * Created by Kartik Kumar Gujarati on 5/4/19 5:14 PM
+ * Copyright (c) 2019 . All rights reserved.
+ *
+ * Last modified 5/4/19 4:48 PM
+ */
+
+package com.kartik.todomvvm.view
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.kartik.todomvvm.R
 import com.kartik.todomvvm.dummy.DummyContent
 import kotlinx.android.synthetic.main.activity_item_detail.*
 import kotlinx.android.synthetic.main.item_detail.view.*
 
-/**
- * A fragment representing a single Item detail screen.
- * This fragment is either contained in a [ItemListActivity]
- * in two-pane mode (on tablets) or a [ItemDetailActivity]
- * on handsets.
- */
-class ItemDetailFragment : Fragment() {
+class ToDoDetailFragment : Fragment() {
 
     /**
      * The dummy content this fragment is presenting.
@@ -36,10 +38,7 @@ class ItemDetailFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.item_detail, container, false)
 
         // Show the dummy content as text in a TextView.

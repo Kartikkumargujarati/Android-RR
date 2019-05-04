@@ -1,19 +1,21 @@
-package com.kartik.todomvvm
+/*
+ * Created by Kartik Kumar Gujarati on 5/4/19 5:14 PM
+ * Copyright (c) 2019 . All rights reserved.
+ *
+ * Last modified 5/4/19 4:56 PM
+ */
+
+package com.kartik.todomvvm.view
 
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import com.kartik.todomvvm.R
 import kotlinx.android.synthetic.main.activity_item_detail.*
 
-/**
- * An activity representing a single Item detail screen. This
- * activity is only used on narrow width devices. On tablet-size devices,
- * item details are presented side-by-side with a list of items
- * in a [ItemListActivity].
- */
-class ItemDetailActivity : AppCompatActivity() {
+class ToDoDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,11 +42,11 @@ class ItemDetailActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            val fragment = ItemDetailFragment().apply {
+            val fragment = ToDoDetailFragment().apply {
                 arguments = Bundle().apply {
                     putString(
-                        ItemDetailFragment.ARG_ITEM_ID,
-                        intent.getStringExtra(ItemDetailFragment.ARG_ITEM_ID)
+                        ToDoDetailFragment.ARG_ITEM_ID,
+                        intent.getStringExtra(ToDoDetailFragment.ARG_ITEM_ID)
                     )
                 }
             }
@@ -64,7 +66,7 @@ class ItemDetailActivity : AppCompatActivity() {
                 //
                 // http://developer.android.com/design/patterns/navigation.html#up-vs-back
 
-                navigateUpTo(Intent(this, ItemListActivity::class.java))
+                navigateUpTo(Intent(this, ToDoListActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)
