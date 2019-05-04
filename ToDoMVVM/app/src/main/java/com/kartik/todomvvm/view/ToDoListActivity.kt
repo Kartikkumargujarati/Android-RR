@@ -13,10 +13,11 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.support.design.widget.Snackbar
 import com.kartik.todomvvm.R
+import com.kartik.todomvvm.model.ToDoItem
 
-import com.kartik.todomvvm.dummy.DummyContent
 import kotlinx.android.synthetic.main.activity_todo_list.*
 import kotlinx.android.synthetic.main.item_list.*
+import java.util.*
 
 class ToDoListActivity : AppCompatActivity() {
 
@@ -25,6 +26,7 @@ class ToDoListActivity : AppCompatActivity() {
      * device.
      */
     private var twoPane: Boolean = false
+    private lateinit var listAdapter: ToDoListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +36,7 @@ class ToDoListActivity : AppCompatActivity() {
         toolbar.title = title
 
         fab.setOnClickListener { view ->
-            //Go to add ToDo item
+            //Go to add ToDoItem item
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
@@ -51,13 +53,17 @@ class ToDoListActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
-        recyclerView.adapter =
-            ToDoListAdapter(DummyContent.ITEMS, object : ToDoListAdapter.OnClickListener {
-                override fun onClick(item: DummyContent.DummyItem?) {
+        val list = ArrayList<ToDoItem>()
+        for (i in 1..25) {
+            list.add(createDummyItem(i))
+        }
+
+        listAdapter = ToDoListAdapter(list, object : ToDoListAdapter.OnClickListener {
+                override fun onClick(item: ToDoItem?) {
                     if (twoPane) {
                         val fragment = ToDoDetailFragment().apply {
                             arguments = Bundle().apply {
-                                putString(ToDoDetailFragment.ARG_ITEM_ID, item?.id)
+                                putParcelable(ToDoDetailFragment.ARG_TODO_ITEM, item)
                             }
                         }
                         supportFragmentManager
@@ -66,12 +72,17 @@ class ToDoListActivity : AppCompatActivity() {
                             .commit()
                     } else {
                         val intent = Intent(this@ToDoListActivity, ToDoDetailActivity::class.java).apply {
-                            putExtra(ToDoDetailFragment.ARG_ITEM_ID, item?.id)
+                            putExtra(ToDoDetailFragment.ARG_TODO_ITEM, item)
                         }
                         startActivity(intent)
                     }
                 }
-
             })
+        recyclerView.adapter = listAdapter
+    }
+
+    private fun createDummyItem(position: Int): ToDoItem {
+        return ToDoItem(position.toString(), "Item Header $position", "Item Content $position",
+            Calendar.getInstance().time, "https://picsum.photos/id/$position/100")
     }
 }

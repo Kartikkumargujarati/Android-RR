@@ -12,10 +12,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.kartik.todomvvm.R
-import com.kartik.todomvvm.dummy.DummyContent
+import com.kartik.todomvvm.model.ToDoItem
 import kotlinx.android.synthetic.main.item_list_content.view.*
 
-class ToDoListAdapter(private var values: List<DummyContent.DummyItem>,
+class ToDoListAdapter(private var values: List<ToDoItem>,
                       private val onClickListener: OnClickListener) : RecyclerView.Adapter<ToDoListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ToDoListAdapter.ViewHolder {
@@ -28,7 +28,7 @@ class ToDoListAdapter(private var values: List<DummyContent.DummyItem>,
         return values.size
     }
 
-    fun updateData(data: ArrayList<DummyContent.DummyItem>) {
+    fun updateData(data: ArrayList<ToDoItem>) {
         values = data
         notifyDataSetChanged()
     }
@@ -38,7 +38,7 @@ class ToDoListAdapter(private var values: List<DummyContent.DummyItem>,
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bindRepo(item: DummyContent.DummyItem?) {
+        fun bindRepo(item: ToDoItem?) {
             itemView.id_text.text = item?.id
             itemView.content.text = item?.content
             itemView.setOnClickListener { onClickListener.onClick(item) }
@@ -46,6 +46,6 @@ class ToDoListAdapter(private var values: List<DummyContent.DummyItem>,
     }
 
     interface OnClickListener {
-        fun onClick(item: DummyContent.DummyItem?)
+        fun onClick(item: ToDoItem?)
     }
 }

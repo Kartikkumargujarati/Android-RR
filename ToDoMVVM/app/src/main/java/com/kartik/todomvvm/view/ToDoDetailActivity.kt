@@ -13,6 +13,7 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.kartik.todomvvm.R
+import com.kartik.todomvvm.model.ToDoItem
 import kotlinx.android.synthetic.main.activity_item_detail.*
 
 class ToDoDetailActivity : AppCompatActivity() {
@@ -44,9 +45,9 @@ class ToDoDetailActivity : AppCompatActivity() {
             // using a fragment transaction.
             val fragment = ToDoDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putString(
-                        ToDoDetailFragment.ARG_ITEM_ID,
-                        intent.getStringExtra(ToDoDetailFragment.ARG_ITEM_ID)
+                    putParcelable(
+                        ToDoDetailFragment.ARG_TODO_ITEM,
+                        intent.getParcelableExtra<ToDoItem>(ToDoDetailFragment.ARG_TODO_ITEM)
                     )
                 }
             }
