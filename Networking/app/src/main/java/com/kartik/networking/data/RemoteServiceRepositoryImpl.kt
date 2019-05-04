@@ -50,6 +50,11 @@ class RemoteServiceRepositoryImpl {
         call.enqueue(callback)
     }
 
+    fun updateGist(id: String, body: GistReq, callback: Callback<Gist>) {
+        val call = mRemoteServiceRepository.updateGist(id, body)
+        call.enqueue(callback)
+    }
+
     private fun getOkHttpClient(): OkHttpClient {
         val client = OkHttpClient().newBuilder()
         client.addInterceptor(object : Interceptor {

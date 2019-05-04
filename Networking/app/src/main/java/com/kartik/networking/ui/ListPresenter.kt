@@ -22,4 +22,6 @@ interface ListPresenter {
 
     fun deleteGist(gist: Gist)
 
+    fun updateGist(id: String, req: GistReq)
+
 }

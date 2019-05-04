@@ -24,4 +24,7 @@ interface RemoteServiceRepository {
 
     @DELETE("/gists/{id}")
     fun deleteGist(@Path("id") id: String): Call<Void>
+
+    @PATCH("/gists/{id}")
+    fun updateGist(@Path("id") id: String, @Body body: GistReq): Call<Gist>
 }
