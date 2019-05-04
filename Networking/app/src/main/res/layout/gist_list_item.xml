@@ -31,6 +31,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"/>
-
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/gist_delete_btn"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:scaleType="center"
+        android:src="@android:drawable/ic_menu_delete"
+        android:tint="@android:color/holo_red_dark"
+        android:layout_gravity="center_vertical"/>
 </LinearLayout>
