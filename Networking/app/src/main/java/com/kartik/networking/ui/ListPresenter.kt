@@ -7,6 +7,7 @@
 
 package com.kartik.networking.ui
 
+import com.kartik.networking.model.Gist
 import com.kartik.networking.model.GistReq
 
 interface ListPresenter {
@@ -18,4 +19,7 @@ interface ListPresenter {
     fun getPublicGists()
 
     fun addPublicGist(req: GistReq)
+
+    fun deleteGist(gist: Gist)
+
 }

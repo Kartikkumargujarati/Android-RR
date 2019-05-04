@@ -12,4 +12,6 @@ import com.kartik.networking.ui.base.BaseView
 
 interface GistListView : BaseView {
     fun showGistList(gistList: List<Gist>)
+    fun gistDeleteSuccess(gist: Gist)
+    fun gistDeleteFailed()
 }
