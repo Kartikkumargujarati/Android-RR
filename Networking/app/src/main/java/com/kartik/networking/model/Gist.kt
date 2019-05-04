@@ -7,10 +7,14 @@
 
 package com.kartik.networking.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Gist(
         val id: String?,
         val created_at: String,
-        val description: String?)
+        val description: String?, val files: Map<String, File?>) : Parcelable
 
-
-
+@Parcelize
+data class File(val filename: String?) : Parcelable
