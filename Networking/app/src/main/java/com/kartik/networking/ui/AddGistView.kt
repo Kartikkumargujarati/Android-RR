@@ -13,4 +13,9 @@ import com.kartik.networking.ui.base.BaseView
 interface AddGistView : BaseView {
 
     fun showSuccessToast(gist: Gist)
+
+    fun showUpdateSuccessToast(gist: Gist)
+
+    fun showUpdateFailedToast()
+
 }

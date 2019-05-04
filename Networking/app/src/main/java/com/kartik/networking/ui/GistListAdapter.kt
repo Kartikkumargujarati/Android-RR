@@ -15,7 +15,7 @@ import com.kartik.networking.R
 import com.kartik.networking.model.Gist
 import kotlinx.android.synthetic.main.gist_list_item.view.*
 
-class GistListAdapter(private var gists: ArrayList<Gist>, private val onDeleteClickListener: OnDeleteClickListener) :
+class GistListAdapter(private var gists: ArrayList<Gist>, private val onClickListener: OnClickListener) :
         RecyclerView.Adapter<GistListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -42,11 +42,13 @@ class GistListAdapter(private var gists: ArrayList<Gist>, private val onDeleteCl
         fun bindRepo(gist: Gist?) {
             itemView.gist_desc_tv.text = gist?.description
             itemView.gist_created_tv.text = gist?.created_at
-            itemView.gist_delete_btn.setOnClickListener { onDeleteClickListener.onDeleteClicked(gist!!) }
+            itemView.gist_delete_btn.setOnClickListener { onClickListener.onDeleteClicked(gist!!) }
+            itemView.gist_edit_btn.setOnClickListener { onClickListener.onEditClicked(gist!!) }
         }
     }
 
-    interface OnDeleteClickListener {
+    interface OnClickListener {
         fun onDeleteClicked(gist: Gist)
+        fun onEditClicked(gist: Gist)
     }
 }

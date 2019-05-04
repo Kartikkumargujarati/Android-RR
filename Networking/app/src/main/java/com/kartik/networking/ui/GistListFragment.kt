@@ -45,14 +45,19 @@ class GistListFragment : Fragment(), GistListView {
 
         mListPresenterImpl = ListPresenterImpl(this, RemoteServiceRepositoryImpl())
 
-        mGistListAdapter = GistListAdapter(ArrayList(), object : GistListAdapter.OnDeleteClickListener {
+        mGistListAdapter = GistListAdapter(ArrayList(), object : GistListAdapter.OnClickListener {
+            override fun onEditClicked(gist: Gist) {
+                val intent = Intent(activity, AddGistActivity::class.java)
+                intent.putExtra(AddGistActivity.GIST, gist)
+                startActivityForResult(intent, 101)
+            }
+
             override fun onDeleteClicked(gist: Gist) {
                 mListPresenterImpl.deleteGist(gist)
             }
         })
         rootView.repo_rl.adapter = mGistListAdapter
         doLoadData()
-
         return rootView
     }
 

@@ -20,17 +20,32 @@ import kotlinx.android.synthetic.main.activity_add_gist.*
 class AddGistActivity : AppCompatActivity(), AddGistView {
 
     private lateinit var mListPresenterImpl: ListPresenterImpl
+    private var gist: Gist? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_gist)
+        if (intent?.extras?.get(GIST) != null) {
+            gist = intent?.extras?.get(GIST) as Gist
+            desc_editText.setText(gist?.description)
+            if (!gist?.files?.isEmpty()!!) {
+                fileName_editText.setText(gist?.files?.keys?.elementAt(0)?.toString())
+            }
+            //fileContent_editText.setText(gist?.description)
+        } else {
+            submit_button.text = "Add Gist"
+        }
         supportActionBar?.title = "Add Gist"
         mListPresenterImpl = ListPresenterImpl(this, RemoteServiceRepositoryImpl())
 
-        add_button.setOnClickListener {
+        submit_button.setOnClickListener {
             val file = GistReq.GistFile(fileContent_editText.text.toString())
             val req = GistReq(desc_editText.text.toString(), mapOf(fileName_editText.text.toString() to file))
-            mListPresenterImpl.addPublicGist(req)
+            if (gist != null) {
+                mListPresenterImpl.updateGist(gist?.id.toString(), req)
+            } else {
+                mListPresenterImpl.addPublicGist(req)
+            }
         }
     }
 
@@ -45,7 +60,21 @@ class AddGistActivity : AppCompatActivity(), AddGistView {
         finish()
     }
 
+    override fun showUpdateSuccessToast(gist: Gist) {
+        Toast.makeText(this, "Gist Updated Successfully", Toast.LENGTH_LONG).show()
+        setResult(Activity.RESULT_OK)
+        finish()
+    }
+
+    override fun showUpdateFailedToast() {
+        Toast.makeText(this, "Updating gist failed. Try again.", Toast.LENGTH_LONG).show()
+    }
+
     override fun showErrorToast() {
-        Toast.makeText(this, "Adding gist failed", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Adding gist failed. Try again.", Toast.LENGTH_LONG).show()
+    }
+
+    companion object {
+        const val GIST = "GIST"
     }
 }
