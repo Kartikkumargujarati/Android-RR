@@ -27,6 +27,7 @@ class GistListFragment : Fragment(), GistListView {
 
     private lateinit var mGistListAdapter: GistListAdapter
     private lateinit var mListPresenterImpl: ListPresenterImpl
+    private var gistList = ArrayList<Gist>()
     private var mFab: FloatingActionButton? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +45,11 @@ class GistListFragment : Fragment(), GistListView {
 
         mListPresenterImpl = ListPresenterImpl(this, RemoteServiceRepositoryImpl())
 
-        mGistListAdapter = GistListAdapter(ArrayList())
+        mGistListAdapter = GistListAdapter(ArrayList(), object : GistListAdapter.OnDeleteClickListener {
+            override fun onDeleteClicked(gist: Gist) {
+                mListPresenterImpl.deleteGist(gist)
+            }
+        })
         rootView.repo_rl.adapter = mGistListAdapter
         doLoadData()
 
@@ -71,11 +76,22 @@ class GistListFragment : Fragment(), GistListView {
     }
 
     override fun showGistList(gistList: List<Gist>) {
-        mGistListAdapter.updateData(gistList as ArrayList<Gist>)
+        this.gistList = gistList as ArrayList<Gist>
+        mGistListAdapter.updateData(gistList)
     }
 
     override fun showErrorToast() {
         Toast.makeText(activity, "Error Loading Gists.", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun gistDeleteSuccess(gist: Gist) {
+        Toast.makeText(activity, "Gist deleted successfully", Toast.LENGTH_SHORT).show()
+        gistList.remove(gist)
+        mGistListAdapter.updateData(gistList)
+    }
+
+    override fun gistDeleteFailed() {
+        Toast.makeText(activity, "Cloud not delete Gist. Try again.", Toast.LENGTH_SHORT).show()
     }
 
     private fun doLoadData() {

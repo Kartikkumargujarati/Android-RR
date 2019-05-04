@@ -19,34 +19,34 @@ class RemoteServiceRepositoryImpl {
 
     private val retrofit = Retrofit.Builder()
             .baseUrl(GITHUB_URL)
+            .client(getOkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     private val mRemoteServiceRepository = retrofit.create(RemoteServiceRepository::class.java)
 
     fun getKotlinRepositories(callback: Callback<GitHubRepositories>) {
+        val retrofit = Retrofit.Builder()
+                .baseUrl(GITHUB_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        val mRemoteServiceRepository = retrofit.create(RemoteServiceRepository::class.java)
+
         val call = mRemoteServiceRepository.getKotlinRepositories()
         call.enqueue(callback)
     }
 
     fun getPublicGists(callback: Callback<List<Gist>>) {
-        val retrofit = Retrofit.Builder()
-                .baseUrl(GITHUB_URL)
-                .client(getOkHttpClient())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        val mRemoteServiceRepository = retrofit.create(RemoteServiceRepository::class.java)
         val call = mRemoteServiceRepository.getPublicGists()
         call.enqueue(callback)
     }
 
     fun postPublicGist(body: GistReq, callback: Callback<Gist>) {
-        val retrofit = Retrofit.Builder()
-                .baseUrl(GITHUB_URL)
-                .client(getOkHttpClient())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        val mRemoteServiceRepository = retrofit.create(RemoteServiceRepository::class.java)
         val call = mRemoteServiceRepository.postPublicGist(body)
+        call.enqueue(callback)
+    }
+
+    fun deleteGist(id: String, callback: Callback<Void>) {
+        val call = mRemoteServiceRepository.deleteGist(id)
         call.enqueue(callback)
     }
 

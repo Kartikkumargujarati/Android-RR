@@ -63,4 +63,16 @@ class ListPresenterImpl(private var mView: BaseView?, private val mRemoteService
             }
         })
     }
+
+    override fun deleteGist(gist: Gist) {
+        mRemoteServiceRepository.deleteGist(gist.id.toString(), object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                (mView as GistListView?)?.gistDeleteSuccess(gist)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                (mView as GistListView?)?.gistDeleteFailed()
+            }
+        })
+    }
 }
