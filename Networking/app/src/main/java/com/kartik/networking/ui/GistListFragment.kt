@@ -75,7 +75,7 @@ class GistListFragment : Fragment(), GistListView {
     }
 
     override fun showErrorToast() {
-        Toast.makeText(activity, "Error Loading data.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, "Error Loading Gists.", Toast.LENGTH_SHORT).show()
     }
 
     private fun doLoadData() {

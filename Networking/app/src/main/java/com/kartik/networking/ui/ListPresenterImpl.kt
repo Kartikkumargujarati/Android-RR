@@ -37,8 +37,10 @@ class ListPresenterImpl(private var mView: BaseView?, private val mRemoteService
     override fun getPublicGists() {
         mRemoteServiceRepository.getPublicGists(object : Callback<List<Gist>> {
             override fun onResponse(call: Call<List<Gist>>?, response: Response<List<Gist>>?) {
-                response?.isSuccessful.let {
-                    (mView as GistListView?)?.showGistList(response?.body()!!)
+                if (response != null && response.isSuccessful && response.body() != null) {
+                    (mView as GistListView?)?.showGistList(response.body()!!)
+                } else {
+                    mView?.showErrorToast()
                 }
             }
 

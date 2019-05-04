@@ -41,6 +41,7 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         if (!isConnectedToInternet()) {
             Toast.makeText(this, "No network connection", Toast.LENGTH_LONG).show()
         } else {
+            // startFragment(repositoryListFragment)
             currentFragment = repositoryListFragment
             fm.beginTransaction().add(R.id.content_frame, gistListFragment, GistListFragment.TAG).hide(gistListFragment).commit()
             fm.beginTransaction().add(R.id.content_frame, repositoryListFragment, RepositoryListFragment.TAG).commit()
@@ -60,11 +61,13 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         when (item.itemId) {
             R.id.nav_repositoryList -> {
                 fab.hide()
+                //startFragment(repositoryListFragment)
                 currentFragment?.let { fm.beginTransaction().hide(it).show(repositoryListFragment).commit() }
                 currentFragment = repositoryListFragment
             }
             R.id.nav_gistList -> {
                 fab.show()
+                //startFragment(repositoryListFragment)
                 currentFragment?.let { fm.beginTransaction().hide(it).show(gistListFragment).commit() }
                 currentFragment = gistListFragment
             }
@@ -72,6 +75,11 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun startFragment(fragment: Fragment) {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.content_frame, fragment).commit()
     }
 
     private fun isConnectedToInternet(): Boolean {
