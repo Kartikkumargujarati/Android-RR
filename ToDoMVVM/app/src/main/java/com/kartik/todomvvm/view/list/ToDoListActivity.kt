@@ -24,16 +24,11 @@ import kotlinx.android.synthetic.main.activity_todo_list.*
 import kotlinx.android.synthetic.main.item_list.*
 import kotlin.collections.ArrayList
 
-class ToDoListActivity : AppCompatActivity(), ToDoListView {
+class ToDoListActivity : AppCompatActivity() {
 
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
-    private var twoPane: Boolean = false
     private lateinit var listAdapter: ToDoListAdapter
     private var todoList = ArrayList<ToDoItem>()
-    private lateinit var presenter: ToDoListPresenter
+    private val viewModel = ToDoListViewModel(ToDoListRepositoryImpl())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,21 +38,41 @@ class ToDoListActivity : AppCompatActivity(), ToDoListView {
         toolbar.title = title
 
         setupFab(fab)
-        if (item_detail_container != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            twoPane = true
-        }
-        presenter = ToDoListPresenterImpl(this)
         setupRecyclerView(item_list)
-        presenter.getToDoList()
+
+        // adding observer with function reference
+        viewModel.todoListStateObservable.addObserver(::updateView)
+    }
+
+    // explicitly clearing out the list and loading data every time the activity resume.
+    override fun onResume() {
+        super.onResume()
+        todoList = ArrayList()
+        listAdapter.updateData(todoList)
+        viewModel.showToDoList()
     }
 
     override fun onDestroy() {
-        presenter.onDestroy()
+        viewModel.onDestroy()
         super.onDestroy()
+    }
+
+    private fun updateView(toDoListState: ToDoListState) {
+        progress.visibility = View.GONE
+        when(toDoListState) {
+            is ToDoListState.ShowList -> {
+                todoList.addAll(toDoListState.items)
+                listAdapter.updateData(toDoListState.items as ArrayList<ToDoItem>)
+            }
+            is ToDoListState.ShowMessage -> Toast.makeText(this, toDoListState.message, Toast.LENGTH_SHORT).show()
+            is ToDoListState.ShowLoading -> progress.visibility = View.VISIBLE
+            is ToDoListState.ShowToDoDetails -> {
+                val intent = Intent(this@ToDoListActivity, ToDoDetailActivity::class.java).apply {
+                    putExtra(ToDoDetailFragment.ARG_TODO_ITEM, toDoListState.item)
+                }
+                startActivity(intent)
+            }
+        }
     }
 
     private fun setupFab(fab: FloatingActionButton?) {
@@ -69,48 +84,8 @@ class ToDoListActivity : AppCompatActivity(), ToDoListView {
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
-        listAdapter = ToDoListAdapter(ArrayList(), object : ToDoListAdapter.OnClickListener {
-                override fun onClick(item: ToDoItem?) {
-                    if (twoPane) {
-                        val fragment = ToDoDetailFragment().apply {
-                            arguments = Bundle().apply {
-                                putParcelable(ToDoDetailFragment.ARG_TODO_ITEM, item)
-                            }
-                        }
-                        supportFragmentManager
-                            .beginTransaction()
-                            .replace(R.id.item_detail_container, fragment)
-                            .commit()
-                    } else {
-                        val intent = Intent(this@ToDoListActivity, ToDoDetailActivity::class.java).apply {
-                            putExtra(ToDoDetailFragment.ARG_TODO_ITEM, item)
-                        }
-                        startActivity(intent)
-                    }
-                }
-            })
+        listAdapter = ToDoListAdapter(ArrayList(), viewModel::onItemClicked)
         recyclerView.adapter = listAdapter
-    }
-
-    override fun showList(itemList: ArrayList<ToDoItem>) {
-        todoList.addAll(itemList)
-        listAdapter.updateData(itemList)
-    }
-
-    override fun showProgress() {
-        progress.visibility = View.VISIBLE
-    }
-
-    override fun hideProgress() {
-        progress.visibility = View.GONE
-    }
-
-    override fun showSuccessToast() {
-        Toast.makeText(this, "Loading Success", Toast.LENGTH_LONG).show()
-    }
-
-    override fun showErrorToast() {
-        Toast.makeText(this, "Loading Failed", Toast.LENGTH_LONG).show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

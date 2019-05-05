@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_list_content.view.*
 
 class ToDoListAdapter(private var values: List<ToDoItem>,
-                      private val onClickListener: OnClickListener
+                      private val onClickListener: (ToDoItem) -> Unit
 ) : RecyclerView.Adapter<ToDoListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
@@ -44,11 +44,7 @@ class ToDoListAdapter(private var values: List<ToDoItem>,
             itemView.id_text.text = item?.id
             itemView.content.text = item?.content
             Picasso.get().load(item?.image).into(itemView.item_iv)
-            itemView.setOnClickListener { onClickListener.onClick(item) }
+            itemView.setOnClickListener { onClickListener(item!!) }
         }
-    }
-
-    interface OnClickListener {
-        fun onClick(item: ToDoItem?)
     }
 }

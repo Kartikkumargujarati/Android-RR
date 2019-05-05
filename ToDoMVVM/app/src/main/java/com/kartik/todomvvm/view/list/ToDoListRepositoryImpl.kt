@@ -1,8 +1,8 @@
 /*
- * Created by Kartik Kumar Gujarati on 5/5/19 12:37 PM
+ * Created by Kartik Kumar Gujarati on 5/5/19 4:06 PM
  * Copyright (c) 2019 . All rights reserved.
  *
- * Last modified 5/5/19 12:37 PM
+ * Last modified 5/5/19 4:06 PM
  */
 
 package com.kartik.todomvvm.view.list
@@ -12,21 +12,19 @@ import com.kartik.todomvvm.model.ToDoItem
 import java.util.*
 import kotlin.random.Random
 
-class ToDoListPresenterImpl(var toDoListView: ToDoListView?) : ToDoListPresenter {
+class ToDoListRepositoryImpl {
 
-    override fun getToDoList() {
-        toDoListView?.showProgress()
+    fun getData(callback: ToDoListRepository) {
         Handler().postDelayed({
             val todoList = ArrayList<ToDoItem>()
             for (i in 1..25) {
                 todoList.add(createDummyItem(i))
             }
-            toDoListView?.hideProgress()
             if (Random.nextBoolean()) {
-                toDoListView?.showSuccessToast()
-                toDoListView?.showList(todoList)
+                callback.onSuccess(todoList)
+                callback.showMessage("Loading Success")
             } else {
-                toDoListView?.showErrorToast()
+                callback.showMessage("Loading Failure")
             }
         }, 3000)
     }
@@ -34,9 +32,5 @@ class ToDoListPresenterImpl(var toDoListView: ToDoListView?) : ToDoListPresenter
     private fun createDummyItem(position: Int): ToDoItem {
         return ToDoItem(position.toString(), "Item Header $position", "Item Content $position",
             Calendar.getInstance().time, "https://picsum.photos/id/$position/200/200")
-    }
-
-    override fun onDestroy() {
-        toDoListView = null
     }
 }
