@@ -1,11 +1,11 @@
 /*
- * Created by Kartik Kumar Gujarati on 5/4/19 5:14 PM
+ * Created by Kartik Kumar Gujarati on 5/5/19 12:34 PM
  * Copyright (c) 2019 . All rights reserved.
  *
- * Last modified 5/4/19 4:56 PM
+ * Last modified 5/4/19 8:10 PM
  */
 
-package com.kartik.todomvvm.view
+package com.kartik.todomvvm.view.detail
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar

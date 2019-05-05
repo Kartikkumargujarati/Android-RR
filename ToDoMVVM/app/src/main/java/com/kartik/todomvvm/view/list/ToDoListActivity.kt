@@ -1,24 +1,29 @@
 /*
- * Created by Kartik Kumar Gujarati on 5/4/19 4:55 PM
+ * Created by Kartik Kumar Gujarati on 5/5/19 12:34 PM
  * Copyright (c) 2019 . All rights reserved.
  *
- * Last modified 5/4/19 4:54 PM
+ * Last modified 5/5/19 12:34 PM
  */
 
-package com.kartik.todomvvm.view
+package com.kartik.todomvvm.view.list
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import com.kartik.todomvvm.R
 import com.kartik.todomvvm.model.ToDoItem
+import com.kartik.todomvvm.view.add.AddToDoItemActivity
+import com.kartik.todomvvm.view.detail.ToDoDetailActivity
+import com.kartik.todomvvm.view.detail.ToDoDetailFragment
 import kotlinx.android.synthetic.main.activity_todo_list.*
 import kotlinx.android.synthetic.main.item_list.*
-import java.util.*
+import kotlin.collections.ArrayList
 
-class ToDoListActivity : AppCompatActivity() {
+class ToDoListActivity : AppCompatActivity(), ToDoListView {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -27,6 +32,7 @@ class ToDoListActivity : AppCompatActivity() {
     private var twoPane: Boolean = false
     private lateinit var listAdapter: ToDoListAdapter
     private var todoList = ArrayList<ToDoItem>()
+    private lateinit var presenter: ToDoListPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,12 +41,7 @@ class ToDoListActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         toolbar.title = title
 
-        fab.setOnClickListener {
-            val intent = Intent(this, ToDoItemActivity::class.java)
-            intent.putExtra(ToDoItemActivity.TODO_ITEM_ID, (todoList.size + 1).toString())
-            startActivityForResult(intent, 1001)
-        }
-
+        setupFab(fab)
         if (item_detail_container != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
@@ -48,16 +49,26 @@ class ToDoListActivity : AppCompatActivity() {
             // activity should be in two-pane mode.
             twoPane = true
         }
-
+        presenter = ToDoListPresenterImpl(this)
         setupRecyclerView(item_list)
+        presenter.getToDoList()
+    }
+
+    override fun onDestroy() {
+        presenter.onDestroy()
+        super.onDestroy()
+    }
+
+    private fun setupFab(fab: FloatingActionButton?) {
+        fab?.setOnClickListener {
+            val intent = Intent(this, AddToDoItemActivity::class.java)
+            intent.putExtra(AddToDoItemActivity.TODO_ITEM_ID, (todoList.size + 1).toString())
+            startActivityForResult(intent, 1001)
+        }
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
-        for (i in 1..25) {
-            todoList.add(createDummyItem(i))
-        }
-
-        listAdapter = ToDoListAdapter(todoList, object : ToDoListAdapter.OnClickListener {
+        listAdapter = ToDoListAdapter(ArrayList(), object : ToDoListAdapter.OnClickListener {
                 override fun onClick(item: ToDoItem?) {
                     if (twoPane) {
                         val fragment = ToDoDetailFragment().apply {
@@ -80,9 +91,17 @@ class ToDoListActivity : AppCompatActivity() {
         recyclerView.adapter = listAdapter
     }
 
-    private fun createDummyItem(position: Int): ToDoItem {
-        return ToDoItem(position.toString(), "Item Header $position", "Item Content $position",
-            Calendar.getInstance().time, "https://picsum.photos/id/$position/200/200")
+    override fun showList(itemList: ArrayList<ToDoItem>) {
+        todoList.addAll(itemList)
+        listAdapter.updateData(itemList)
+    }
+
+    override fun showProgress() {
+        progress.visibility = View.VISIBLE
+    }
+
+    override fun hideProgress() {
+        progress.visibility = View.GONE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

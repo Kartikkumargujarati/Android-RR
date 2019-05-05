@@ -1,11 +1,11 @@
 /*
- * Created by Kartik Kumar Gujarati on 5/4/19 5:50 PM
+ * Created by Kartik Kumar Gujarati on 5/5/19 12:34 PM
  * Copyright (c) 2019 . All rights reserved.
  *
- * Last modified 5/4/19 5:50 PM
+ * Last modified 5/5/19 10:35 AM
  */
 
-package com.kartik.todomvvm.view
+package com.kartik.todomvvm.view.add
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -15,11 +15,11 @@ import kotlinx.android.synthetic.main.activity_add_to_do_item.*
 import java.util.*
 import android.content.Intent
 import android.app.Activity
-import com.kartik.todomvvm.view.ToDoListActivity.Companion.NEW_TODO_ITEM
+import com.kartik.todomvvm.view.list.ToDoListActivity.Companion.NEW_TODO_ITEM
 import com.squareup.picasso.Picasso
 
 
-class ToDoItemActivity : AppCompatActivity() {
+class AddToDoItemActivity : AppCompatActivity() {
 
     private var newItemId: String? = null
 
