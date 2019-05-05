@@ -14,6 +14,7 @@ import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.widget.Toast
 import com.kartik.todomvvm.R
 import com.kartik.todomvvm.model.ToDoItem
 import com.kartik.todomvvm.view.add.AddToDoItemActivity
@@ -102,6 +103,14 @@ class ToDoListActivity : AppCompatActivity(), ToDoListView {
 
     override fun hideProgress() {
         progress.visibility = View.GONE
+    }
+
+    override fun showSuccessToast() {
+        Toast.makeText(this, "Loading Success", Toast.LENGTH_LONG).show()
+    }
+
+    override fun showErrorToast() {
+        Toast.makeText(this, "Loading Failed", Toast.LENGTH_LONG).show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

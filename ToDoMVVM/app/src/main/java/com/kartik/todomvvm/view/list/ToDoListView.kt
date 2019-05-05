@@ -17,4 +17,8 @@ interface ToDoListView {
     fun showProgress()
 
     fun hideProgress()
+
+    fun showSuccessToast()
+
+    fun showErrorToast()
 }

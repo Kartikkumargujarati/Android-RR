@@ -10,6 +10,7 @@ package com.kartik.todomvvm.view.list
 import android.os.Handler
 import com.kartik.todomvvm.model.ToDoItem
 import java.util.*
+import kotlin.random.Random
 
 class ToDoListPresenterImpl(var toDoListView: ToDoListView?) : ToDoListPresenter {
 
@@ -21,7 +22,12 @@ class ToDoListPresenterImpl(var toDoListView: ToDoListView?) : ToDoListPresenter
                 todoList.add(createDummyItem(i))
             }
             toDoListView?.hideProgress()
-            toDoListView?.showList(todoList)
+            if (Random.nextBoolean()) {
+                toDoListView?.showSuccessToast()
+                toDoListView?.showList(todoList)
+            } else {
+                toDoListView?.showErrorToast()
+            }
         }, 3000)
     }
 
