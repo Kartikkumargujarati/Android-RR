@@ -7,13 +7,14 @@
 
 package com.kartik.todomvvm.view
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
-import android.support.design.widget.Snackbar
 import com.kartik.todomvvm.R
 import com.kartik.todomvvm.model.ToDoItem
+import com.kartik.todomvvm.view.AddToDoItemActivity.Companion.TODO_ITEM_ID
 
 import kotlinx.android.synthetic.main.activity_todo_list.*
 import kotlinx.android.synthetic.main.item_list.*
@@ -27,6 +28,7 @@ class ToDoListActivity : AppCompatActivity() {
      */
     private var twoPane: Boolean = false
     private lateinit var listAdapter: ToDoListAdapter
+    private var todoList = ArrayList<ToDoItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,10 +37,10 @@ class ToDoListActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         toolbar.title = title
 
-        fab.setOnClickListener { view ->
-            //Go to add ToDoItem item
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        fab.setOnClickListener {
+            val intent = Intent(this, AddToDoItemActivity::class.java)
+            intent.putExtra(TODO_ITEM_ID, (todoList.size + 1).toString())
+            startActivityForResult(intent, 1001)
         }
 
         if (item_detail_container != null) {
@@ -53,12 +55,11 @@ class ToDoListActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
-        val list = ArrayList<ToDoItem>()
         for (i in 1..25) {
-            list.add(createDummyItem(i))
+            todoList.add(createDummyItem(i))
         }
 
-        listAdapter = ToDoListAdapter(list, object : ToDoListAdapter.OnClickListener {
+        listAdapter = ToDoListAdapter(todoList, object : ToDoListAdapter.OnClickListener {
                 override fun onClick(item: ToDoItem?) {
                     if (twoPane) {
                         val fragment = ToDoDetailFragment().apply {
@@ -83,6 +84,21 @@ class ToDoListActivity : AppCompatActivity() {
 
     private fun createDummyItem(position: Int): ToDoItem {
         return ToDoItem(position.toString(), "Item Header $position", "Item Content $position",
-            Calendar.getInstance().time, "https://picsum.photos/id/$position/100")
+            Calendar.getInstance().time, "https://picsum.photos/id/$position/200/200")
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(resultCode) {
+            Activity.RESULT_OK -> {
+                val newItem = data?.extras?.getParcelable(NEW_TODO_ITEM) as ToDoItem
+                todoList.add(newItem)
+                listAdapter.updateData(todoList)
+            }
+        }
+    }
+
+    companion object {
+        const val NEW_TODO_ITEM = "new_todo_item"
     }
 }

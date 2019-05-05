@@ -7,7 +7,6 @@
 
 package com.kartik.todomvvm.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
@@ -43,12 +42,10 @@ class ToDoDetailActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
+            val toDoItem = intent.getParcelableExtra<ToDoItem>(ToDoDetailFragment.ARG_TODO_ITEM)
             val fragment = ToDoDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(
-                        ToDoDetailFragment.ARG_TODO_ITEM,
-                        intent.getParcelableExtra<ToDoItem>(ToDoDetailFragment.ARG_TODO_ITEM)
-                    )
+                    putParcelable(ToDoDetailFragment.ARG_TODO_ITEM, toDoItem)
                 }
             }
 
@@ -66,8 +63,8 @@ class ToDoDetailActivity : AppCompatActivity() {
                 // more details, see the Navigation pattern on Android Design:
                 //
                 // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-
-                navigateUpTo(Intent(this, ToDoListActivity::class.java))
+                finish()
+                //navigateUpTo(Intent(this, ToDoListActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)

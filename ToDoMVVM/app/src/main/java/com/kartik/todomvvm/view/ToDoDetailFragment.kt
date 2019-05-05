@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.kartik.todomvvm.R
 import com.kartik.todomvvm.model.ToDoItem
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_item_detail.*
 import kotlinx.android.synthetic.main.item_detail.view.*
 
@@ -41,7 +42,10 @@ class ToDoDetailFragment : Fragment() {
         // Show the dummy content as text in a TextView.
         item?.let {
             rootView.item_detail.text = it.content
+            rootView.item_updated.text = "Created on: ${it.created}"
+            Picasso.get().load(it.image).into(rootView.todo_detail_iv)
         }
+
         return rootView
     }
 

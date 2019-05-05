@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.kartik.todomvvm.R
 import com.kartik.todomvvm.model.ToDoItem
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_list_content.view.*
 
 class ToDoListAdapter(private var values: List<ToDoItem>,
@@ -41,6 +42,7 @@ class ToDoListAdapter(private var values: List<ToDoItem>,
         fun bindRepo(item: ToDoItem?) {
             itemView.id_text.text = item?.id
             itemView.content.text = item?.content
+            Picasso.get().load(item?.image).into(itemView.item_iv)
             itemView.setOnClickListener { onClickListener.onClick(item) }
         }
     }
