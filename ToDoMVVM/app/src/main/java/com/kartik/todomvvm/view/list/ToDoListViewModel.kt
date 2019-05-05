@@ -7,31 +7,41 @@
 
 package com.kartik.todomvvm.view.list
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.ViewModelProvider
 import com.kartik.todomvvm.model.ToDoItem
-import com.kartik.todomvvm.view.CustomObservable
 
-class ToDoListViewModel(private val repository: ToDoListRepositoryImpl) : ToDoListPresenter {
+class ToDoListViewModel(private val repository: ToDoListRepositoryImpl) : ViewModel(), ToDoListPresenter {
 
-    val todoListStateObservable = CustomObservable<ToDoListState>()
+    private val _todoListState = MutableLiveData<ToDoListState>()
+
+    val todoListState: LiveData<ToDoListState>
+        get() = _todoListState
 
     override fun showToDoList() {
-        todoListStateObservable.notifyObservers(ToDoListState.ShowLoading)
+        _todoListState.value = ToDoListState.ShowLoading
         repository.getData(object : ToDoListRepository {
             override fun onSuccess(items: List<ToDoItem>) {
-                todoListStateObservable.notifyObservers(ToDoListState.ShowList(items))
+                _todoListState.value = ToDoListState.ShowList(items)
             }
 
             override fun showMessage(string: String) {
-                todoListStateObservable.notifyObservers(ToDoListState.ShowMessage(string))
+                _todoListState.value = ToDoListState.ShowMessage(string)
             }
         })
     }
 
     fun onItemClicked(item: ToDoItem) {
-        todoListStateObservable.notifyObservers(ToDoListState.ShowToDoDetails(item))
+        _todoListState.value = ToDoListState.ShowToDoDetails(item)
     }
+}
 
-    override fun onDestroy() {
-        todoListStateObservable.clearObservers()
+class ToDoListViewModelFactory(private val repository: ToDoListRepositoryImpl) :
+    ViewModelProvider.NewInstanceFactory() {
+
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return ToDoListViewModel(repository) as T
     }
 }

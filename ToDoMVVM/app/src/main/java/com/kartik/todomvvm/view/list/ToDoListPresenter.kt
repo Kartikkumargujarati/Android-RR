@@ -9,5 +9,4 @@ package com.kartik.todomvvm.view.list
 
 interface ToDoListPresenter {
     fun showToDoList()
-    fun onDestroy()
 }

@@ -8,6 +8,7 @@
 package com.kartik.todomvvm.view.list
 
 import android.app.Activity
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
@@ -28,7 +29,7 @@ class ToDoListActivity : AppCompatActivity() {
 
     private lateinit var listAdapter: ToDoListAdapter
     private var todoList = ArrayList<ToDoItem>()
-    private val viewModel = ToDoListViewModel(ToDoListRepositoryImpl())
+    private lateinit var viewModel: ToDoListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,11 +38,14 @@ class ToDoListActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         toolbar.title = title
 
+        viewModel = ViewModelProviders.of(
+            this, ToDoListViewModelFactory(ToDoListRepositoryImpl()))[ToDoListViewModel::class.java]
+
         setupFab(fab)
         setupRecyclerView(item_list)
 
         // adding observer with function reference
-        viewModel.todoListStateObservable.addObserver(::updateView)
+        viewModel.todoListState.observe(::getLifecycle, ::updateView)
     }
 
     // explicitly clearing out the list and loading data every time the activity resume.
@@ -52,12 +56,7 @@ class ToDoListActivity : AppCompatActivity() {
         viewModel.showToDoList()
     }
 
-    override fun onDestroy() {
-        viewModel.onDestroy()
-        super.onDestroy()
-    }
-
-    private fun updateView(toDoListState: ToDoListState) {
+    private fun updateView(toDoListState: ToDoListState?) {
         progress.visibility = View.GONE
         when(toDoListState) {
             is ToDoListState.ShowList -> {
