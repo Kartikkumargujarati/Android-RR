@@ -46,13 +46,6 @@ class ToDoListActivity : AppCompatActivity() {
 
         // adding observer with function reference
         viewModel.todoListState.observe(::getLifecycle, ::updateView)
-    }
-
-    // explicitly clearing out the list and loading data every time the activity resume.
-    override fun onResume() {
-        super.onResume()
-        todoList = ArrayList()
-        listAdapter.updateData(todoList)
         viewModel.showToDoList()
     }
 

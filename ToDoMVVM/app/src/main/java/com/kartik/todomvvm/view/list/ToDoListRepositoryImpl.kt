@@ -20,8 +20,9 @@ class ToDoListRepositoryImpl {
             for (i in 1..25) {
                 todoList.add(createDummyItem(i))
             }
+            callback.onSuccess(todoList)
+            //show the error message randomly.
             if (Random.nextBoolean()) {
-                callback.onSuccess(todoList)
                 callback.showMessage("Loading Success")
             } else {
                 callback.showMessage("Loading Failure")
