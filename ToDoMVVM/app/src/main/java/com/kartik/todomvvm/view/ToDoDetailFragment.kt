@@ -42,7 +42,7 @@ class ToDoDetailFragment : Fragment() {
         // Show the dummy content as text in a TextView.
         item?.let {
             rootView.item_detail.text = it.content
-            rootView.item_updated.text = "Created on: ${it.created}"
+            rootView.item_updated.text = "Updated on: ${it.updated}"
             Picasso.get().load(it.image).into(rootView.todo_detail_iv)
         }
 

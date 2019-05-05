@@ -14,8 +14,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import com.kartik.todomvvm.R
 import com.kartik.todomvvm.model.ToDoItem
-import com.kartik.todomvvm.view.AddToDoItemActivity.Companion.TODO_ITEM_ID
-
 import kotlinx.android.synthetic.main.activity_todo_list.*
 import kotlinx.android.synthetic.main.item_list.*
 import java.util.*
@@ -38,8 +36,8 @@ class ToDoListActivity : AppCompatActivity() {
         toolbar.title = title
 
         fab.setOnClickListener {
-            val intent = Intent(this, AddToDoItemActivity::class.java)
-            intent.putExtra(TODO_ITEM_ID, (todoList.size + 1).toString())
+            val intent = Intent(this, ToDoItemActivity::class.java)
+            intent.putExtra(ToDoItemActivity.TODO_ITEM_ID, (todoList.size + 1).toString())
             startActivityForResult(intent, 1001)
         }
 

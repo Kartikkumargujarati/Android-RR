@@ -19,7 +19,7 @@ import com.kartik.todomvvm.view.ToDoListActivity.Companion.NEW_TODO_ITEM
 import com.squareup.picasso.Picasso
 
 
-class AddToDoItemActivity : AppCompatActivity() {
+class ToDoItemActivity : AppCompatActivity() {
 
     private var newItemId: String? = null
 
