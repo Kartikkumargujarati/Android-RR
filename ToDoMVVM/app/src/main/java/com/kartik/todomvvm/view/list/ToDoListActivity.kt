@@ -64,6 +64,10 @@ class ToDoListActivity : AppCompatActivity() {
                 }
                 startActivity(intent)
             }
+            is ToDoListState.RemoveToDoItemFromList -> {
+                toDoListState.item.isCompleted = true
+                //update adapter
+            }
         }
     }
 
@@ -76,7 +80,7 @@ class ToDoListActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
-        listAdapter = ToDoListAdapter(ArrayList(), viewModel::onItemClicked)
+        listAdapter = ToDoListAdapter(ArrayList(), viewModel::onItemClicked, viewModel::onItemChecked)
         recyclerView.adapter = listAdapter
     }
 

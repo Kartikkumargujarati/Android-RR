@@ -36,6 +36,10 @@ class ToDoListViewModel(private val repository: ToDoListRepositoryImpl) : ViewMo
     fun onItemClicked(item: ToDoItem) {
         _todoListState.value = ToDoListState.ShowToDoDetails(item)
     }
+
+    fun onItemChecked(item: ToDoItem) {
+        _todoListState.value = ToDoListState.RemoveToDoItemFromList(item)
+    }
 }
 
 class ToDoListViewModelFactory(private val repository: ToDoListRepositoryImpl) :

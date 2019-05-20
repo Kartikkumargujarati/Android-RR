@@ -13,11 +13,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.kartik.todomvvm.R
 import com.kartik.todomvvm.model.ToDoItem
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_list_content.view.*
 
 class ToDoListAdapter(private var values: List<ToDoItem>,
-                      private val onClickListener: (ToDoItem) -> Unit
+                      private val onClickListener: (ToDoItem) -> Unit, private val onCheckListener: (ToDoItem) -> Unit
 ) : RecyclerView.Adapter<ToDoListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
@@ -41,10 +40,10 @@ class ToDoListAdapter(private var values: List<ToDoItem>,
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bindRepo(item: ToDoItem?) {
-            itemView.id_text.text = item?.id
-            itemView.content.text = item?.content
-            Picasso.get().load(item?.image).into(itemView.item_iv)
+            itemView.item_header_tv.text = item?.header
+            itemView.item_content_tv.text = item?.content
             itemView.setOnClickListener { onClickListener(item!!) }
+            itemView.item_done_cb.setOnCheckedChangeListener { _, isChecked -> if (isChecked) {onCheckListener(item!!)} }
         }
     }
 }

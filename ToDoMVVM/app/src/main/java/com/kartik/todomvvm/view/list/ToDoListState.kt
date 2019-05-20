@@ -14,4 +14,5 @@ sealed class ToDoListState {
     class ShowMessage(val message: String) : ToDoListState()
     object ShowLoading : ToDoListState()
     class ShowToDoDetails(val item: ToDoItem) : ToDoListState()
+    class RemoveToDoItemFromList(val item: ToDoItem) : ToDoListState()
 }
