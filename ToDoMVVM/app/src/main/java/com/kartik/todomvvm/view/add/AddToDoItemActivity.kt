@@ -38,7 +38,7 @@ class AddToDoItemActivity : AppCompatActivity() {
             val item = newItemId?.let { it1 ->
                 ToDoItem(
                     it1, header_editText.text.toString(), notes_editText.text.toString(),
-                    Calendar.getInstance().time, "https://picsum.photos/id/$newItemId/200/200")
+                    Calendar.getInstance().time)
             }
             setResult(Activity.RESULT_OK, Intent().putExtra(NEW_TODO_ITEM, item))
             finish()

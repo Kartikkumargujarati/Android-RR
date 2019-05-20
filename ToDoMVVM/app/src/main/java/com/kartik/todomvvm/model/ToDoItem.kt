@@ -17,4 +17,4 @@ data class ToDoItem(
         val header: String,
         val content: String,
         val updated: Date,
-        val image: String) : Parcelable
+        var isCompleted: Boolean = false) : Parcelable

@@ -43,7 +43,6 @@ class ToDoDetailFragment : Fragment() {
         item?.let {
             rootView.item_detail.text = it.content
             rootView.item_updated.text = "Updated on: ${it.updated}"
-            Picasso.get().load(it.image).into(rootView.todo_detail_iv)
         }
 
         return rootView

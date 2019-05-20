@@ -32,6 +32,6 @@ class ToDoListRepositoryImpl {
 
     private fun createDummyItem(position: Int): ToDoItem {
         return ToDoItem(position.toString(), "Item Header $position", "Item Content $position",
-            Calendar.getInstance().time, "https://picsum.photos/id/$position/200/200")
+            Calendar.getInstance().time)
     }
 }
