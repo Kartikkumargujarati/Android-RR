@@ -18,9 +18,6 @@ import android.view.View
 import android.widget.Toast
 import com.kartik.todomvvm.R
 import com.kartik.todomvvm.model.ToDoItem
-import com.kartik.todomvvm.view.add.AddToDoItemActivity
-import com.kartik.todomvvm.view.detail.ToDoDetailActivity
-import com.kartik.todomvvm.view.detail.ToDoDetailFragment
 import kotlinx.android.synthetic.main.activity_todo_list.*
 import kotlinx.android.synthetic.main.item_list.*
 import kotlin.collections.ArrayList
@@ -59,10 +56,7 @@ class ToDoListActivity : AppCompatActivity() {
             is ToDoListState.ShowMessage -> Toast.makeText(this, toDoListState.message, Toast.LENGTH_SHORT).show()
             is ToDoListState.ShowLoading -> progress.visibility = View.VISIBLE
             is ToDoListState.ShowToDoDetails -> {
-                val intent = Intent(this@ToDoListActivity, ToDoDetailActivity::class.java).apply {
-                    putExtra(ToDoDetailFragment.ARG_TODO_ITEM, toDoListState.item)
-                }
-                startActivity(intent)
+                Toast.makeText(this, "${toDoListState.item.header} clicked", Toast.LENGTH_SHORT).show()
             }
             is ToDoListState.RemoveToDoItemFromList -> {
                 toDoListState.item.isCompleted = true
@@ -73,9 +67,7 @@ class ToDoListActivity : AppCompatActivity() {
 
     private fun setupFab(fab: FloatingActionButton?) {
         fab?.setOnClickListener {
-            val intent = Intent(this, AddToDoItemActivity::class.java)
-            intent.putExtra(AddToDoItemActivity.TODO_ITEM_ID, (todoList.size + 1).toString())
-            startActivityForResult(intent, 1001)
+            Toast.makeText(this, "Add clicked", Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -11,26 +11,16 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".view.add.AddToDoItemActivity">
-        </activity>
         <activity
                 android:name=".view.list.ToDoListActivity"
                 android:label="@string/app_name"
                 android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
-        <activity
-                android:name=".view.detail.ToDoDetailActivity"
-                android:label="@string/title_item_detail"
-                android:parentActivityName=".view.list.ToDoListActivity"
-                android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.kartik.todomvvm.view.list.ToDoListActivity"/>
         </activity>
     </application>
 
